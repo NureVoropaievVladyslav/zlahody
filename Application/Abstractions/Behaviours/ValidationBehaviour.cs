@@ -1,4 +1,4 @@
-namespace Application.Common.Behaviours;
+namespace Application.Abstractions.Behaviours;
 
 public sealed class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
