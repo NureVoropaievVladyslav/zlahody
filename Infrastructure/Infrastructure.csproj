@@ -10,10 +10,10 @@
     <ItemGroup>
       <Folder Include="Data\Migrations\" />
       <Folder Include="Identity\" />
-      <Folder Include="Repositories\" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FirebaseAdmin" Version="3.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
