@@ -1,6 +1,25 @@
-<!-- COMPONENT IS JUST A PLACEHOLDER -->
-<!-- IT IS TO BE DEVELOPED IN THE SEPARATE FEATURE -->
-<h1 style="color: red">COMPONENT IS JUST A PLACEHOLDER</h1>
-<h2 style="color: red">IT IS TO BE DEVELOPED IN THE SEPARATE FEATURE</h2>
-<h3 style="color: red">LOGIN BUTTON IS HARDCODED AND USED TO DEBUG AUTH</h3>
-<button (click)="login()">Login</button>
+<div class="container">
+    <div class="card">
+
+        <h1>Welcome back!</h1>
+    
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+            <input type="email" id="email" formControlName="email" placeholder="Email" />
+            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+                <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
+            </div>
+        
+            <input type="password" id="password" formControlName="password" placeholder="Password" />
+            <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+                <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+            </div>
+    
+            <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    
+            <p>Not a member? <a routerLink="/account/register">Create an account.</a></p>
+        
+        </form>
+        
+    </div>    
+</div>
