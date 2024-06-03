@@ -15,4 +15,8 @@ public class User : BaseEntity
     public Organization? Organization { get; set; }
 
     public ICollection<Request> Requests { get; } = new List<Request>();
+    
+    public ICollection<Message> Messages { get; } = new List<Message>();
+    
+    public ICollection<ChatUser> ChatUsers { get; } = new List<ChatUser>();
 }

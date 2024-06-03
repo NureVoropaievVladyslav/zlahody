@@ -1,0 +1,68 @@
+@import 'styles'
+
+.container
+  display: flex
+  flex-direction: column
+  gap: .25rem
+  position: relative
+  height: calc(100% - 2 * 1rem)
+  padding: 1rem
+  border-radius: 10px
+  background: $background-color
+
+  .messages
+    height: 87.5vh
+    overflow-y: scroll
+    display: flex
+    flex-direction: column
+    gap: .25rem
+
+  .message
+    padding: 0.5rem 1rem
+    border-radius: 10px
+
+    span
+      display: block
+      width: 100%
+      text-align: right
+      font-weight: 500
+      color: rgba($text-color, 50%)
+
+  .sent
+    margin-left: auto
+    margin-right: .5rem
+    background-color: rgba($primary-color, 20%)
+
+  .received
+    margin-right: auto
+    background-color: rgba($primary-color, 70%)
+
+  .sent + .received, .received + .sent
+    margin-top: 1rem
+
+  input
+    position: absolute
+    bottom: 0.5rem
+    left: 0.5rem
+    width: calc(100% - 1rem)
+    padding: 1rem 3rem 1rem 1rem
+    border: 2px solid $secondary-color
+    border-radius: 2px
+    outline: none
+    background: rgba($secondary-color, 5%)
+    font-size: 1rem
+
+  svg
+    position: absolute
+    width: 2.5rem
+    aspect-ratio: 1
+    bottom: 1.5rem
+    right: 1rem
+    cursor: pointer
+    font-size: 1.5rem
+
+    path
+      stroke: $primary-color
+
+    &:hover
+      opacity: .7
