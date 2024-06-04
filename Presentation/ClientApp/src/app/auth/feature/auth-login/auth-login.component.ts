@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthLoginComponent {
 
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
 
