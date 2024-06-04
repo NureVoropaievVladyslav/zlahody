@@ -35,11 +35,6 @@ export class AuthService {
     this.httpService.post('/users', {fullName, email, password}).subscribe({
       next: () => {
         this.router.navigate(['auth/login']);
-      },
-      error: (error) => {
-        this.toastr.error(error.error.Detail)
-        console.log(error);
-        
       }
     });
   }
