@@ -32,11 +32,7 @@ export class AuthLoginComponent {
   onSubmit() {
     if(this.loginForm.valid){
       this.authService.login(this.email?.value, this.password?.value).subscribe({
-        next: () => {
-          console.log('Login successful');
-        },
         error: (error) => {
-          console.error('Login failed', error);
           this.toastr.error("Invalid email or password.")
         }
       });

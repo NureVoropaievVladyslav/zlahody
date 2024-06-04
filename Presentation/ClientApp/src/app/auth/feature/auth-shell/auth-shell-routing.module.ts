@@ -8,7 +8,14 @@ const routes: Routes = [
       import('../auth-login/auth-login.module').then(
           (m) => m.AuthLoginModule
       ),
-  }
+  },
+  {
+    path: 'register',
+    loadChildren: () =>
+      import('../auth-register/auth-register.module').then(
+        (m) => m.AuthRegisterModule
+      ),
+  },
 ];
 
 @NgModule({

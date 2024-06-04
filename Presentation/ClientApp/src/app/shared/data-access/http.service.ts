@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,10 @@ export class HttpService {
 
   private baseUrl = environment.apiUrl;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private toastr: ToastrService
+  ) { }
 
   get<T>(url: string): Observable<T> {
     return this.httpClient.get<T>(this.buildUrl(url), this.getHeaders()).pipe(catchError(this.handleError));
