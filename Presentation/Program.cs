@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Presentation.Middleware;
 using Presentation.Options;
@@ -16,6 +17,7 @@ builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
 
 builder.Services.AddCors(options =>
 {
@@ -43,6 +45,8 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chat");
 
 app.MigrateContext();
 

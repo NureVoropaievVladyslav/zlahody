@@ -22,28 +22,69 @@ namespace Infrastructure.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Chat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ChatUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatUsers");
+                });
+
             modelBuilder.Entity("Domain.Entities.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("ReceiverId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("ChatId");
 
                     b.HasIndex("SenderId");
 
@@ -55,6 +96,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -74,6 +118,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("boolean");
@@ -102,6 +149,9 @@ namespace Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -123,36 +173,40 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MessageMessage", b =>
+            modelBuilder.Entity("Domain.Entities.ChatUser", b =>
                 {
-                    b.Property<Guid>("ReceivedMessagesId")
-                        .HasColumnType("uuid");
+                    b.HasOne("Domain.Entities.Chat", "Chat")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("SentMessagesId")
-                        .HasColumnType("uuid");
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("ReceivedMessagesId", "SentMessagesId");
+                    b.Navigation("Chat");
 
-                    b.HasIndex("SentMessagesId");
-
-                    b.ToTable("MessageMessage");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Message", b =>
                 {
-                    b.HasOne("Domain.Entities.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
+                    b.HasOne("Domain.Entities.Chat", "Chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.User", "Sender")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Receiver");
+                    b.Navigation("Chat");
 
                     b.Navigation("Sender");
                 });
@@ -183,19 +237,11 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Organization");
                 });
 
-            modelBuilder.Entity("MessageMessage", b =>
+            modelBuilder.Entity("Domain.Entities.Chat", b =>
                 {
-                    b.HasOne("Domain.Entities.Message", null)
-                        .WithMany()
-                        .HasForeignKey("ReceivedMessagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ChatUsers");
 
-                    b.HasOne("Domain.Entities.Message", null)
-                        .WithMany()
-                        .HasForeignKey("SentMessagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Organization", b =>
@@ -207,6 +253,10 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("ChatUsers");
+
+                    b.Navigation("Messages");
+
                     b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618

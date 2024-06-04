@@ -6,11 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Organizations",
                 columns: table => new
@@ -44,22 +55,47 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ChatId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatUsers_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChatUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    SenderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ReceiverId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsRead = table.Column<bool>(type: "boolean", nullable: false)
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false),
+                    ChatId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SenderId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Users_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "Users",
+                        name: "FK_Messages_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -97,39 +133,20 @@ namespace Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "MessageMessage",
-                columns: table => new
-                {
-                    ReceivedMessagesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SentMessagesId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MessageMessage", x => new { x.ReceivedMessagesId, x.SentMessagesId });
-                    table.ForeignKey(
-                        name: "FK_MessageMessage_Messages_ReceivedMessagesId",
-                        column: x => x.ReceivedMessagesId,
-                        principalTable: "Messages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MessageMessage_Messages_SentMessagesId",
-                        column: x => x.SentMessagesId,
-                        principalTable: "Messages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatUsers_ChatId",
+                table: "ChatUsers",
+                column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MessageMessage_SentMessagesId",
-                table: "MessageMessage",
-                column: "SentMessagesId");
+                name: "IX_ChatUsers_UserId",
+                table: "ChatUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ReceiverId",
+                name: "IX_Messages_ChatId",
                 table: "Messages",
-                column: "ReceiverId");
+                column: "ChatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_SenderId",
@@ -156,13 +173,16 @@ namespace Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MessageMessage");
+                name: "ChatUsers");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Requests");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                name: "Chats");
 
             migrationBuilder.DropTable(
                 name: "Users");

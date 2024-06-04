@@ -9,6 +9,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Organization> Organizations => Set<Organization>();
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<Request> Requests => Set<Request>();
+    public DbSet<Chat> Chats => Set<Chat>();
+    public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

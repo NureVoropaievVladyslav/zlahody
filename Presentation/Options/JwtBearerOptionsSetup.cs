@@ -24,6 +24,19 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
             ValidIssuer = _configuration["JwtBearerOptions:ValidIssuer"],
             ValidAudience = _configuration["JwtBearerOptions:ValidAudience"]
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context => {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) 
+                    && path.StartsWithSegments("/chat"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
     }
 
     public void Configure(string? name, JwtBearerOptions options)
@@ -36,6 +49,19 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
             ValidateLifetime = true,
             ValidIssuer = _configuration["JwtBearerOptions:ValidIssuer"],
             ValidAudience = _configuration["JwtBearerOptions:ValidAudience"]
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context => {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) 
+                    && path.StartsWithSegments("/chat"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
         };
     }
 }
