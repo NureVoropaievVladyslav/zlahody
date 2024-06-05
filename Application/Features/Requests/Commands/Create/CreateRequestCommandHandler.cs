@@ -2,7 +2,7 @@
 
 namespace Application.Features.Requests.Commands.Create;
 
-public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand>
+public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, Unit>
 {
     private readonly IRequestService _requestService;
     private readonly IUnitOfWork _unitOfWork;
@@ -15,10 +15,11 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateRequestCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
     {
         var victimRequest = _mapper.Map<Request>(request);
         await _requestService.CreateRequestAsync(victimRequest, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        return Unit.Value;
     }
 }
