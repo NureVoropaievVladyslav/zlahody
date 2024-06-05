@@ -34,6 +34,16 @@ public class RequestService(
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }
 
+    public async Task<ICollection<Request>> GetOrganisationRequestsAsync(Guid organisationId, CancellationToken cancellationToken)
+    {
+        var getRequestsQuery = requestRepository.GetQueryable()
+            .Where(request => request.OrganizationId == organisationId)
+            .Include(request => request.Victim)
+            .Include(request => request.Organization);
+
+        return await getRequestsQuery.ToListAsync(cancellationToken);
+    }
+
     private string GetUserEmailFromContext()
     {
         const string firebaseEmailClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";

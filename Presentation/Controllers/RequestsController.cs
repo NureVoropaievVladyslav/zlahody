@@ -1,6 +1,7 @@
 ﻿using Application.Features.Chats.Commands.Create;
 using Application.Features.Requests.Commands.Create;
 using Application.Features.Requests.Queries.GetAvaliableRequest;
+using Application.Features.Requests.Queries.GetOrganisationRequests;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace Presentation.Controllers
         public async Task<ActionResult> CreaGetAvaliableRequests(CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetAvaliableRequestsQuery(), cancellationToken);
+            return Ok(response);
+        }
+
+        [HttpGet("organisations/{organisationId}")]
+        public async Task<ActionResult> GetOrganisationRequests(Guid organisationId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetOrganisationRequestsQuery(organisationId), cancellationToken);
             return Ok(response);
         }
     }
