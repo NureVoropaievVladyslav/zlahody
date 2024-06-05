@@ -11,6 +11,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Request> Requests => Set<Request>();
     public DbSet<Chat> Chats => Set<Chat>();
     public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
+    public DbSet<RequestAssignment> RequestAssignments => Set<RequestAssignment>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

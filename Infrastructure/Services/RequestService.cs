@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Interfaces;
 using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services;
@@ -7,9 +8,39 @@ namespace Infrastructure.Services;
 public class RequestService(
     IRepository<User> userRepository,
     IRepository<Request> requestRepository,
+    IRepository<RequestAssignment> requestAssignmentRepository,
+    IRepository<Organization> organizationRepository,
     IHttpContextAccessor httpContextAccessor
     ) : IRequestService
 {
+    public async Task AssignRequestAsync(Guid userId, Guid requestId, CancellationToken cancellationToken)
+    {
+        var getRequestAssignmentQuery = requestAssignmentRepository.GetQueryable().AsNoTracking();
+
+        if(await requestAssignmentRepository.GetQueryable().AnyAsync(a => a.UserId == userId && a.RequestId == requestId, cancellationToken))
+        {
+            throw new ConflictException("User is already assigned to request.");
+        }
+
+        var user = await userRepository.GetAsync(userId, cancellationToken)
+                        ?? throw new NotFoundException("User not found.");
+        var request = await requestRepository.GetAsync(requestId, cancellationToken)
+                        ?? throw new NotFoundException("Request not found.");
+
+        request.OrganizationId = user.OrganizationId;
+  
+        var assignment = new RequestAssignment
+        {
+            UserId = userId,
+            User = user,
+            RequestId = requestId,
+            Request = request
+        };
+
+        requestRepository.Update(request);
+        await requestAssignmentRepository.AddAsync(assignment, cancellationToken);
+    }
+
     public async Task CreateRequestAsync(Request request, CancellationToken cancellationToken)
     {
         var getUsersQuery = userRepository.GetQueryable().AsNoTracking();
@@ -22,14 +53,25 @@ public class RequestService(
 
 
         await requestRepository.AddAsync(request, cancellationToken);
+    }
 
+    public async Task<ICollection<Request>> GetAssignedRequestsAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var user = await userRepository.GetAsync(userId, cancellationToken)
+            ?? throw new NotFoundException("User not found.");
+
+        var assignedRequests = await requestAssignmentRepository.GetQueryable()
+                                .Where(request => request.UserId == userId)
+                                .Select(requestAssignment => requestAssignment.Request)
+                                .ToListAsync(cancellationToken);
+
+        return assignedRequests;
     }
 
     public async Task<ICollection<Request>> GetAvaliableRequestsAsync(CancellationToken cancellationToken)
     {
         var getRequestsQuery = requestRepository.GetQueryable()
-            .Where(request => request.OrganizationId == null)
-            .Include(request => request.Victim);
+            .Where(request => request.OrganizationId == null);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }
@@ -37,9 +79,7 @@ public class RequestService(
     public async Task<ICollection<Request>> GetOrganisationRequestsAsync(Guid organisationId, CancellationToken cancellationToken)
     {
         var getRequestsQuery = requestRepository.GetQueryable()
-            .Where(request => request.OrganizationId == organisationId)
-            .Include(request => request.Victim)
-            .Include(request => request.Organization);
+            .Where(request => request.OrganizationId == organisationId);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }

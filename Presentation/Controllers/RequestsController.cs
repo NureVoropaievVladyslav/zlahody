@@ -1,5 +1,7 @@
 ﻿using Application.Features.Chats.Commands.Create;
 using Application.Features.Requests.Commands.Create;
+using Application.Features.Requests.Commands.RequestAssignment;
+using Application.Features.Requests.Queries.GetAssignedRequests;
 using Application.Features.Requests.Queries.GetAvaliableRequest;
 using Application.Features.Requests.Queries.GetOrganisationRequests;
 using MediatR;
@@ -26,6 +28,13 @@ namespace Presentation.Controllers
             return Ok();
         }
 
+        [HttpPost("assign")]
+        public async Task<ActionResult> AssignRequest([FromBody] RequestAssignmentCommand request, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(request, cancellationToken);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<ActionResult> CreaGetAvaliableRequests(CancellationToken cancellationToken)
         {
@@ -37,6 +46,13 @@ namespace Presentation.Controllers
         public async Task<ActionResult> GetOrganisationRequests(Guid organisationId, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetOrganisationRequestsQuery(organisationId), cancellationToken);
+            return Ok(response);
+        }
+
+        [HttpGet("assigned/{userId}")]
+        public async Task<ActionResult> GetAssignedRequests(Guid userId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAssignedRequestsQuery(userId), cancellationToken);
             return Ok(response);
         }
     }
