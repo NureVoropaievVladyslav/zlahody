@@ -2,7 +2,7 @@
 
 public interface IRequestService
 {
-    Task AssignRequestAsync(Guid requestId1, Guid requestId2, CancellationToken cancellationToken);
+    Task AssignRequestAsync(Guid userId, Guid requestId, CancellationToken cancellationToken);
     Task CreateRequestAsync(Request request, CancellationToken cancellationToken);
     Task<ICollection<Request>> GetAssignedRequestsAsync(Guid userId, CancellationToken cancellationToken);
     Task<ICollection<Request>> GetAvaliableRequestsAsync(CancellationToken cancellationToken);

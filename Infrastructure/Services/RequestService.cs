@@ -9,17 +9,14 @@ public class RequestService(
     IRepository<User> userRepository,
     IRepository<Request> requestRepository,
     IRepository<RequestAssignment> requestAssignmentRepository,
-    IRepository<Organization> organizationRepository,
     IHttpContextAccessor httpContextAccessor
     ) : IRequestService
 {
     public async Task AssignRequestAsync(Guid userId, Guid requestId, CancellationToken cancellationToken)
     {
-        var getRequestAssignmentQuery = requestAssignmentRepository.GetQueryable().AsNoTracking();
-
-        if(await requestAssignmentRepository.GetQueryable().AnyAsync(a => a.UserId == userId && a.RequestId == requestId, cancellationToken))
+        if (await requestAssignmentRepository.GetQueryable().AnyAsync(a => a.RequestId == requestId, cancellationToken))
         {
-            throw new ConflictException("User is already assigned to request.");
+            throw new ConflictException("Request is already assigned.");
         }
 
         var user = await userRepository.GetAsync(userId, cancellationToken)
@@ -63,6 +60,7 @@ public class RequestService(
         var assignedRequests = await requestAssignmentRepository.GetQueryable()
                                 .Where(request => request.UserId == userId)
                                 .Select(requestAssignment => requestAssignment.Request)
+                                .AsNoTracking()
                                 .ToListAsync(cancellationToken);
 
         return assignedRequests;
@@ -71,6 +69,7 @@ public class RequestService(
     public async Task<ICollection<Request>> GetAvaliableRequestsAsync(CancellationToken cancellationToken)
     {
         var getRequestsQuery = requestRepository.GetQueryable()
+            .AsNoTracking()
             .Where(request => request.OrganizationId == null);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
@@ -79,6 +78,7 @@ public class RequestService(
     public async Task<ICollection<Request>> GetOrganisationRequestsAsync(Guid organisationId, CancellationToken cancellationToken)
     {
         var getRequestsQuery = requestRepository.GetQueryable()
+            .AsNoTracking()
             .Where(request => request.OrganizationId == organisationId);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
