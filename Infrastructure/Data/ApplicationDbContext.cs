@@ -12,7 +12,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Chat> Chats => Set<Chat>();
     public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
     public DbSet<RequestAssignment> RequestAssignments => Set<RequestAssignment>();
-    
+    public DbSet<OrganizationApplication> OrganizationApplication => Set<OrganizationApplication>();
+
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

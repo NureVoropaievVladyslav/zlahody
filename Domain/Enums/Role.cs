@@ -4,5 +4,6 @@ public enum Role
 {
     Victim,
     Psychologist,
-    Volunteer
+    Volunteer,
+    OrganisationOwner
 }
