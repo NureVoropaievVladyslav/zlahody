@@ -43,7 +43,7 @@ public class OrganizationService(
 
     public async Task CreateOrganizationAsync(string name, CancellationToken cancellationToken)
     {
-        var getUsersQuery = userRepository.GetQueryable().AsNoTracking();
+        var getUsersQuery = userRepository.GetQueryable();
 
         var ownerEmail = GetUserEmailFromContext();
         var owner = await getUsersQuery.FirstOrDefaultAsync(u => u.Email == ownerEmail, cancellationToken)
@@ -64,9 +64,14 @@ public class OrganizationService(
     public async Task JoinOrganizationAsync(Guid organizationId, CancellationToken cancellationToken)
     {
         var getUsersQuery = userRepository.GetQueryable().AsNoTracking();
+        var getOrganizationQuery = organizationRepository.GetQueryable().AsNoTracking();
+
         var volunteerEmail = GetUserEmailFromContext();
         var volunteer = await getUsersQuery.FirstOrDefaultAsync(u => u.Email == volunteerEmail, cancellationToken)
                        ?? throw new NotFoundException("Volunteer not found.");
+
+        var organization = await getOrganizationQuery.FirstOrDefaultAsync(o => o.Id == organizationId, cancellationToken)
+                        ?? throw new NotFoundException("Organization not found.");
 
         var application = new OrganizationApplication { OrganisationId = organizationId, VolunteerId = volunteer.Id };
 
