@@ -16,6 +16,23 @@ const routes: Routes = [
                 (m) => m.AuthShellModule
             ),
     },
+    {
+        path: 'home',
+        loadChildren: () =>
+            import('./home/feature/home-landing/home-landing.module').then(
+                (m) => m.HomeLandingModule
+            ),
+    },
+    {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+    },
+    {
+        path: '**',
+        redirectTo: 'home',
+        pathMatch: 'full',
+    },
 ];
 
 @NgModule({
