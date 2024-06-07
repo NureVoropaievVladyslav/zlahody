@@ -3,15 +3,19 @@ using Application.Features.Organizations.Commands.CreateOrganization;
 using Application.Features.Organizations.Commands.JoinOrganization;
 using Application.Features.Organizations.Commands.KickUser;
 using Application.Features.Organizations.Commands.LeaveOrganization;
-using Application.Features.Requests.Commands.Create;
+using Application.Features.Organizations.Queries.Get;
+using Application.Features.Organizations.Queries.GetApplications;
+using Application.Features.Organizations.Queries.GetOrganizationApplications;
+using Application.Features.Organizations.Queries.GetPersonalOrganization;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrganizationsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -19,6 +23,27 @@ namespace Presentation.Controllers
         public OrganizationsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetOrganizations(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetOrganizationsQuery(), cancellationToken);
+            return Ok(response);
+        }
+
+        [HttpGet("applications")]
+        public async Task<ActionResult> GetApplications(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetApplicationsQuery(), cancellationToken);
+            return Ok(response);
+        }
+        
+        [HttpGet("personal")]
+        public async Task<ActionResult> GetPersonalOrganization(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetPersonalOrganizationQuery(), cancellationToken);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -54,6 +79,13 @@ namespace Presentation.Controllers
         {
             await _mediator.Send(new KickUserCommand(volunteerId, organizationId), cancellationToken);
             return Ok();
+        }
+        
+        [HttpGet("{organizationId}/applications")]
+        public async Task<ActionResult> GetApplications(Guid organizationId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetOrganizationApplicationsQuery(organizationId), cancellationToken);
+            return Ok(response);
         }
     }
 }

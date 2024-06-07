@@ -26,6 +26,7 @@ export class AuthService {
           return userCredential.user?.getIdToken().then((token) => {
             localStorage.setItem('token', token);
             localStorage.setItem('email', userCredential.user!.email!);
+            this.router.navigate(['organizations/']);
           });
       })
     );

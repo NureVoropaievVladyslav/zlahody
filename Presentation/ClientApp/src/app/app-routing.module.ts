@@ -17,6 +17,13 @@ const routes: Routes = [
             ),
     },
     {
+        path: 'organizations',
+        loadChildren: () =>
+            import('./organizations/feature/organization-shell/organization-shell.module').then(
+                (m) => m.OrganizationShellModule
+            ),
+    },
+    {
         path: 'home',
         loadChildren: () =>
             import('./home/feature/home-landing/home-landing.module').then(

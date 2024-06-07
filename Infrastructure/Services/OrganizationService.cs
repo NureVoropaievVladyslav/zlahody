@@ -53,12 +53,23 @@ public class OrganizationService(
         {
             throw new ConflictException("Organization is already exists.");
         }
-
-        owner.Role = Role.OrganisationOwner;
+        
         var organization = new Organization { Name = name };
+        owner.Role = Role.OrganisationOwner;
+        owner.Organization = organization;
 
         userRepository.Update(owner);
         await organizationRepository.AddAsync(organization, cancellationToken);
+    }
+
+    public async Task<ICollection<Organization>> GetOrganizationsAsync(CancellationToken cancellationToken)
+    {
+        var getOrganizationQuery = organizationRepository.GetQueryable()
+            .AsNoTracking();
+
+        return await getOrganizationQuery
+            .Include(o => o.Volunteers)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task JoinOrganizationAsync(Guid organizationId, CancellationToken cancellationToken)
@@ -72,7 +83,14 @@ public class OrganizationService(
 
         var organization = await getOrganizationQuery.FirstOrDefaultAsync(o => o.Id == organizationId, cancellationToken)
                         ?? throw new NotFoundException("Organization not found.");
-
+        
+        if (await organizationApplicationRepository
+            .GetQueryable()
+            .AnyAsync(oa => oa.VolunteerId == volunteer.Id && oa.OrganisationId == organization.Id || volunteer.OrganizationId != null, cancellationToken))
+        {
+            throw new ConflictException("You have already applied to this organization.");
+        }
+        
         var application = new OrganizationApplication { OrganisationId = organizationId, VolunteerId = volunteer.Id };
 
         await organizationApplicationRepository.AddAsync(application, cancellationToken);
@@ -118,6 +136,57 @@ public class OrganizationService(
         {
             throw new ForbiddenException("You are not a volunteer of this organization.");
         }
+    }
+
+    public Task<List<OrganizationApplication>> GetApplicationsAsync(CancellationToken cancellationToken)
+    {
+        var volunteerEmail = GetUserEmailFromContext();
+        var volunteer = userRepository.GetQueryable().FirstOrDefault(u => u.Email == volunteerEmail)
+                       ?? throw new NotFoundException("Volunteer not found.");
+        var getOrganizationApplicationsQuery = organizationApplicationRepository.GetQueryable().AsNoTracking();
+        return getOrganizationApplicationsQuery
+            .Where(oa => oa.VolunteerId == volunteer.Id)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<Guid> GetPersonalOrganizationAsync(CancellationToken cancellationToken)
+    {
+        var userEmail = GetUserEmailFromContext();
+        var user = userRepository
+                       .GetQueryable()
+                       .AsNoTracking()
+                       .FirstOrDefault(u => u.Email == userEmail)
+                   ?? throw new NotFoundException("User not found.");
+
+        var organization = await organizationRepository
+            .GetQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o => o.Volunteers.Any(v => v.Id == user.Id), cancellationToken);
+        
+        return organization?.Id ?? Guid.Empty;
+    }
+
+    public async Task<List<OrganizationApplication>> GetOrganizationApplicationsAsync(Guid organizationId, CancellationToken cancellationToken)
+    {
+        var ownerEmail = GetUserEmailFromContext();
+        var owner = await userRepository
+                        .GetQueryable()
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(u => u.Email == ownerEmail, cancellationToken)
+                            ?? throw new NotFoundException("Owner not found.");
+        
+        var organization = await organizationRepository
+            .GetQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o => o.Id == organizationId, cancellationToken)
+                ?? throw new NotFoundException("Organization not found.");
+
+        return await organizationApplicationRepository
+            .GetQueryable()
+            .AsNoTracking()
+            .Where(oa => oa.OrganisationId == organization.Id && oa.VolunteerId != owner.Id)
+            .Include(oa => oa.Volunteer)
+            .ToListAsync(cancellationToken);
     }
 
     private string GetUserEmailFromContext()

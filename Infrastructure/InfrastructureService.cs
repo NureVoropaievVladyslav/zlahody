@@ -21,6 +21,7 @@ public static class InfrastructureService
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IContextProcedures, ContextProcedures>();
         services.AddRepositoriesFromAssemblies();
         services.AddServicesFromAssemblies();
         services.InitialiseFirebaseApp(configuration);

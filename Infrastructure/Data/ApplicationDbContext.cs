@@ -20,4 +20,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
     }
+    
+    public void MarkMessagesAsRead(Guid messageId, Guid chatId)
+    {
+        Database.ExecuteSqlRaw("CALL mark_messages_as_read({0}, {1})", messageId, chatId);
+    }
+
+
 }
