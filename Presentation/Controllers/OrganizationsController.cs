@@ -3,6 +3,7 @@ using Application.Features.Organizations.Commands.CreateOrganization;
 using Application.Features.Organizations.Commands.JoinOrganization;
 using Application.Features.Organizations.Commands.KickUser;
 using Application.Features.Organizations.Commands.LeaveOrganization;
+using Application.Features.Organizations.Queries.Get;
 using Application.Features.Requests.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,13 @@ namespace Presentation.Controllers
         public OrganizationsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetOrganizations(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetOrganizationsQuery(), cancellationToken);
+            return Ok(response);
         }
 
         [HttpPost]

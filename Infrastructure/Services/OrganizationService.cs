@@ -61,6 +61,14 @@ public class OrganizationService(
         await organizationRepository.AddAsync(organization, cancellationToken);
     }
 
+    public async Task<ICollection<Organization>> GetOrganizationsAsync(CancellationToken cancellationToken)
+    {
+        var getOrganizationQuery = organizationRepository.GetQueryable()
+            .AsNoTracking();
+
+        return await getOrganizationQuery.ToListAsync(cancellationToken);
+    }
+
     public async Task JoinOrganizationAsync(Guid organizationId, CancellationToken cancellationToken)
     {
         var getUsersQuery = userRepository.GetQueryable().AsNoTracking();
