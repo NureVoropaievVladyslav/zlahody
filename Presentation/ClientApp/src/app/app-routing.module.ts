@@ -22,7 +22,24 @@ const routes: Routes = [
             import('./organizations/feature/organization-shell/organization-shell.module').then(
                 (m) => m.OrganizationShellModule
             ),
-    }
+    },
+    {
+        path: 'home',
+        loadChildren: () =>
+            import('./home/feature/home-landing/home-landing.module').then(
+                (m) => m.HomeLandingModule
+            ),
+    },
+    {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+    },
+    {
+        path: '**',
+        redirectTo: 'home',
+        pathMatch: 'full',
+    },
 ];
 
 @NgModule({

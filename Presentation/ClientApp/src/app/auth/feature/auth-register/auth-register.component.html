@@ -6,7 +6,7 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
             <div class="form-row">
-                <input type="text" id="fullName" formControlName="fullName" placeholder="Full name" />
+                <input type="text" id="fullName" formControlName="fullName" placeholder="Full name" [ngClass]="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched) ? 'danger' : ''" />
                 <div *ngIf="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)">
                     <div *ngIf="registerForm.get('fullName')?.errors?.['required']">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +18,7 @@
             </div>
         
             <div class="form-row">
-                <input type="email" id="email" formControlName="email" placeholder="Email" />
+                <input type="email" id="email" formControlName="email" placeholder="Email" [ngClass]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched) ? 'danger' : ''" />
                 <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
                     <div *ngIf="registerForm.get('email')?.errors?.['required']">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,7 @@
             </div>
         
             <div class="form-row">
-                <input type="password" id="password" formControlName="password" placeholder="Password" />
+                <input type="password" id="password" formControlName="password" placeholder="Password" [ngClass]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched) ? 'danger' : ''" />
                 <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
                     <div *ngIf="registerForm.get('password')?.errors?.['required']">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,7 +78,10 @@
             </div>
             </div>
     
-            <button class="primary" type="submit" [disabled]="registerForm.invalid">Register</button>        
+            <button class="primary" type="submit" [disabled]="registerForm.invalid">Register</button>
+
+            <p>Already a member? <a routerLink="/auth/login">Sign in.</a></p>
+
         </form>
         
     </div>    
