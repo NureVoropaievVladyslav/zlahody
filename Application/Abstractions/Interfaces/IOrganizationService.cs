@@ -10,4 +10,8 @@ public interface IOrganizationService
     Task JoinOrganizationAsync(Guid organizationId, CancellationToken cancellationToken);
     Task KickUserAsync(Guid volunteerId, Guid organizationId, CancellationToken cancellationToken);
     Task LeaveOrganizationAsync(Guid organizationId, CancellationToken cancellationToken);
+    Task<List<OrganizationApplication>> GetApplicationsAsync(CancellationToken cancellationToken);
+    Task<Guid> GetPersonalOrganizationAsync(CancellationToken cancellationToken);
+    Task<List<OrganizationApplication>> GetOrganizationApplicationsAsync(Guid organizationId,
+        CancellationToken cancellationToken);
 }

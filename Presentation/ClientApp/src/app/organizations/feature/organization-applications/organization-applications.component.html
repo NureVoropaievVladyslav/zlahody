@@ -1,0 +1,20 @@
+<app-organization-navbar></app-organization-navbar>
+<ng-container class="container" *ngIf="applications.length === 0">
+    <div class="applications">
+        <div class="application" *ngFor="let application of organizationApplications">
+            <h1>{{ application.volunteerName }}</h1>
+            <h1>{{ application.volunteerId }}</h1>
+            <h2>{{ application.isAccepted }}</h2>
+            <button *ngIf="!application.isAccepted" (click)="accept(application)">Accept</button>
+            <button *ngIf="application.isAccepted" (click)="kick(application)">Kick</button>
+        </div>
+    </div>
+</ng-container>
+<ng-container class="container" *ngIf="applications.length > 0">
+    <div class="applications">
+        <div class="application" *ngFor="let application of applications">
+            <h1>{{ application.organisationId }}</h1>
+            <h2>{{ application.isAccepted }}</h2>
+        </div>
+    </div>
+</ng-container>

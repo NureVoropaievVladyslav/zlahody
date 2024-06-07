@@ -14,7 +14,8 @@ public class OrganizationResponse
     {
         public MappingProfile()
         {
-            CreateMap<Organization, OrganizationResponse>();
+            CreateMap<Organization, OrganizationResponse>()
+                .ForMember(dest => dest.NumberOfMembers, opt => opt.MapFrom(src => src.Volunteers.Count));
         }
     }
 }

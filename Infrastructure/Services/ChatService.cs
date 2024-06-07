@@ -10,7 +10,8 @@ public class ChatService(
     IRepository<Chat> chatRepository, 
     IRepository<Message> messageRepository,
     IRepository<ChatUser> chatUsersRepository,
-    IHttpContextAccessor httpContextAccessor) : IChatService
+    IHttpContextAccessor httpContextAccessor,
+    IContextProcedures contextProcedures) : IChatService
 {
     public async Task CreateChatAsync(string sendeeEmail, CancellationToken cancellationToken)
     {
@@ -91,6 +92,16 @@ public class ChatService(
             .Include(m => m.Sender)
             .OrderBy(m => m.CreatedAt)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task MarkMessagesAsReadAsync(Guid messageId, Guid chatId, CancellationToken cancellationToken)
+    {
+        var message = await messageRepository.GetAsync(messageId, cancellationToken) 
+                      ?? throw new NotFoundException("Message not found.");
+        var chat = await chatRepository.GetAsync(chatId, cancellationToken)
+                    ?? throw new NotFoundException("Chat not found.");
+        
+        contextProcedures.MarkMessagesAsRead(messageId, chatId);
     }
 
     private string GetUserEmailFromContext()

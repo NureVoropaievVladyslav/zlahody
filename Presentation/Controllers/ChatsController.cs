@@ -1,5 +1,6 @@
 using Application.Features.Chats.Commands;
 using Application.Features.Chats.Commands.Create;
+using Application.Features.Chats.Commands.MarkMessageRead;
 using Application.Features.Chats.Queries.Get;
 using Application.Features.Chats.Queries.GetMessages;
 using MediatR;
@@ -45,6 +46,13 @@ public class ChatsController : ControllerBase
     public async Task<ActionResult> CreateMessage(Guid id, [FromBody] SendMessageCommand request, CancellationToken cancellationToken)
     {
         await _mediator.Send(request, cancellationToken);
+        return Ok();
+    }
+    
+    [HttpPut("{chatId}/messages/{messageId}")]
+    public async Task<ActionResult> MarkAsRead(Guid chatId, Guid messageId, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new MarkMessageReadCommand(messageId, chatId), cancellationToken);
         return Ok();
     }
 }

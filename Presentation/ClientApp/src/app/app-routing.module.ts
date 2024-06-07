@@ -16,6 +16,13 @@ const routes: Routes = [
                 (m) => m.AuthShellModule
             ),
     },
+    {
+        path: 'organizations',
+        loadChildren: () =>
+            import('./organizations/feature/organization-shell/organization-shell.module').then(
+                (m) => m.OrganizationShellModule
+            ),
+    }
 ];
 
 @NgModule({

@@ -9,4 +9,5 @@ public interface IChatService
     Task<ICollection<ChatUser>> GetChatsAsync(CancellationToken cancellationToken);
     
     Task<ICollection<Message>> GetMessagesAsync(Guid chatId, CancellationToken cancellationToken);
+    Task MarkMessagesAsReadAsync(Guid messageId, Guid chatId, CancellationToken cancellationToken);
 }

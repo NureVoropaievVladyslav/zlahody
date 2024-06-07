@@ -26,9 +26,10 @@ export class ErrorInterceptor implements HttpInterceptor {
           switch(error.status){
             case 401:
               this.toastr.error("Unauthorized", error.status.toString())
+                this.router.navigate(['auth/login']);
             break;
             default:
-              this.toastr.error(error.error.Detail);
+              this.toastr.error(error.error.detail);
             break;
           }
         }
