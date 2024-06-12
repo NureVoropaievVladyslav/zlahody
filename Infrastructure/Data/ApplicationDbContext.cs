@@ -13,7 +13,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
     public DbSet<RequestAssignment> RequestAssignments => Set<RequestAssignment>();
     public DbSet<OrganizationApplication> OrganizationApplication => Set<OrganizationApplication>();
-
+    public DbSet<Resource> Resources => Set<Resource>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -36,7 +36,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> CreaGetAvaliableRequests(CancellationToken cancellationToken)
+        public async Task<ActionResult> GetAvaliableRequests(CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetAvaliableRequestsQuery(), cancellationToken);
             return Ok(response);
