@@ -7,4 +7,5 @@ public enum RequestType
     InformationRequest,
     Complaint,
     Feedback,
+    PsychologicalSupport
 }
