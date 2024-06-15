@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -82,6 +83,28 @@ public class RequestService(
             .Where(request => request.OrganizationId == organisationId);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
+    }
+
+    public async Task<ICollection<Request>> GetPsychologicalRequestsAsync(CancellationToken cancellationToken)
+    {
+        var getUsersQuery = userRepository.GetQueryable().AsNoTracking();
+        var psychologistEmail = GetUserEmailFromContext();
+
+        var psychologist = await getUsersQuery.FirstOrDefaultAsync(u => u.Email == psychologistEmail, cancellationToken)
+                       ?? throw new NotFoundException("Psychologist not found.");
+
+        if (psychologist.Role == Role.Psychologist)
+        {
+            var getRequestsQuery = requestRepository.GetQueryable()
+            .AsNoTracking()
+            .Where(request => request.RequestType == RequestType.PsychologicalSupport);
+
+            return await getRequestsQuery.ToListAsync(cancellationToken);
+        }
+        else 
+        {
+            throw new ForbiddenException("You are not a psychologist");
+        }
     }
 
     private string GetUserEmailFromContext()

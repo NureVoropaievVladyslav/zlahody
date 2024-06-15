@@ -7,4 +7,5 @@ public interface IRequestService
     Task<ICollection<Request>> GetAssignedRequestsAsync(Guid userId, CancellationToken cancellationToken);
     Task<ICollection<Request>> GetAvaliableRequestsAsync(CancellationToken cancellationToken);
     Task<ICollection<Request>> GetOrganisationRequestsAsync(Guid organisationId, CancellationToken cancellationToken);
+    Task<ICollection<Request>> GetPsychologicalRequestsAsync(CancellationToken cancellationToken);
 }
