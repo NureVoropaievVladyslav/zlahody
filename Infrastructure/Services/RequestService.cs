@@ -71,7 +71,7 @@ public class RequestService(
     {
         var getRequestsQuery = requestRepository.GetQueryable()
             .AsNoTracking()
-            .Where(request => request.OrganizationId == null);
+            .Where(request => request.OrganizationId == null && request.RequestType != RequestType.PsychologicalSupport);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }
@@ -80,7 +80,7 @@ public class RequestService(
     {
         var getRequestsQuery = requestRepository.GetQueryable()
             .AsNoTracking()
-            .Where(request => request.OrganizationId == organisationId);
+            .Where(request => request.OrganizationId == organisationId && request.RequestType != RequestType.PsychologicalSupport);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }
