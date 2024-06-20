@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Text, ScrollView, View, Dimensions, Alert, TouchableOpacity } from 'react-native';
+import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormField from '@/components/FormField';
 import ActionButton from '@/components/ActionButton';
-import { router, Link } from 'expo-router';
+import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -32,7 +32,6 @@ export default function LoginScreen() {
             })
                 .then((response) => response.json())
                 .then(async (data) => {
-                    console.log('Success:', data);
                     await AsyncStorage.setItem('token', data.idToken);
                     router.replace('(tabs)/resources');
                 })

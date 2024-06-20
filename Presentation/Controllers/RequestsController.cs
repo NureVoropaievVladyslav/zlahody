@@ -4,12 +4,15 @@ using Application.Features.Requests.Commands.RequestAssignment;
 using Application.Features.Requests.Queries.GetAssignedRequests;
 using Application.Features.Requests.Queries.GetAvaliableRequest;
 using Application.Features.Requests.Queries.GetOrganisationRequests;
+using Application.Features.Requests.Queries.GetSentRequests;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestsController : ControllerBase
@@ -53,6 +56,13 @@ namespace Presentation.Controllers
         public async Task<ActionResult> GetAssignedRequests(Guid userId, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetAssignedRequestsQuery(userId), cancellationToken);
+            return Ok(response);
+        }
+
+        [HttpGet("sent")]
+        public async Task<ActionResult> GetSentRequests(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetSentRequestsQuery(), cancellationToken);
             return Ok(response);
         }
     }

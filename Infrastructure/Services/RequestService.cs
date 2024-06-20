@@ -107,6 +107,15 @@ public class RequestService(
         }
     }
 
+    public async Task<ICollection<Request>> GetSentRequestsAsync(CancellationToken cancellationToken)
+    {
+        var userEmail = GetUserEmailFromContext();
+        return await requestRepository.GetQueryable()
+            .AsNoTracking()
+            .Where(r => r.Victim.Email == userEmail)
+            .ToListAsync(cancellationToken);
+    }
+
     private string GetUserEmailFromContext()
     {
         const string firebaseEmailClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";

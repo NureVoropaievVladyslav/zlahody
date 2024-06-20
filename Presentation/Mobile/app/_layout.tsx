@@ -15,6 +15,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     "BricolageGrotesque-Bold": require('../assets/fonts/BricolageGrotesque-Bold.ttf'),
     "Poppins-Regular": require('../assets/fonts/Poppins-Regular.ttf'),
+    "Poppins-Bold": require('../assets/fonts/Poppins-Bold.ttf'),
   });
 
   useEffect(() => {
