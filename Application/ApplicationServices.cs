@@ -1,5 +1,5 @@
 using System.Reflection;
-using Application.Common.Behaviours;
+using Application.Abstractions.Behaviours;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;

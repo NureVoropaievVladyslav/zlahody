@@ -1,0 +1,99 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'sass:math'
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')
+
+$background-color: #F1F2FF
+$primary-color: #888DD8
+$secondary-color: #C0C3F4
+$accent-color: #F8AF4F
+$text-color: #252525
+$success-color: #A6C682
+$danger-color: #E66060
+$warning-color: #64bbdb
+$info-color: #8e9caa
+
+$type-scale: 1.333
+
+::-webkit-scrollbar
+    width: 4px
+
+::-webkit-scrollbar-thumb
+    background: rgba($primary-color, 20%)
+    border-radius: 10px
+
+::-webkit-scrollbar-thumb:hover
+    background: $primary-color
+
+*
+    margin: 0
+    padding: 0
+    box-sizing: border-box
+
+body
+    background-color: $background-color
+    font-family: "Bricolage Grotesque", sans-serif
+    color: $text-color
+    font-size: 16px
+    line-height: 1.5
+
+h1
+    font-size: math.pow($type-scale, 5) * 1rem
+h2
+    font-size: math.pow($type-scale, 4) * 1rem
+h3
+    font-size: math.pow($type-scale, 3) * 1rem
+h4
+    font-size: math.pow($type-scale, 2) * 1rem
+h5
+    font-size: $type-scale * 1rem
+
+p, a, li, input, button
+    font-family: "Poppins", sans-serif
+    font-size: 1rem
+    line-height: 2.25
+
+a
+    text-decoration: none
+    color: $text-color
+
+    &:hover
+        text-decoration: underline
+        text-decoration-thickness: 2px
+
+input
+    padding: .5rem 1rem
+    outline: none
+    border-radius: 50px
+    border: 2px solid $secondary-color
+
+    &:focus
+        border-color: $primary-color
+
+    &.danger
+        border-color: $danger-color
+        color: $danger-color
+
+        &::placeholder
+            color: $danger-color
+
+button
+    padding: .5rem 1rem
+    outline: none
+    border-radius: 50px
+
+    &.primary
+        border: none
+        background: $primary-color
+        color: $background-color
+
+    &.primary-border
+        border: 2px solid $primary-color
+
+    &.transparent
+        color: $primary-color
+        background: transparent
+        backdrop-filter: blur(100px)
+
+    &:hover
+        opacity: .7
+        cursor: pointer

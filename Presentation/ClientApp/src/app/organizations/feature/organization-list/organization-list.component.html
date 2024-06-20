@@ -1,0 +1,10 @@
+<app-organization-navbar></app-organization-navbar>
+<div class="container">
+    <div class="organizations">
+        <div class="organization" *ngFor="let organization of organizations">
+            <h2>{{ organization.name }}</h2>
+            <h3>{{ organization.numberOfMembers }}</h3>
+            <button class="primary" (click)="join(organization.id)">Request</button>
+        </div>
+    </div>
+</div>

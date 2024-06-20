@@ -4,13 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Folder Include="Entities\" />
-      <Folder Include="Enums\" />
-      <Folder Include="Exceptions\" />
-    </ItemGroup>
 
 </Project>

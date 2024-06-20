@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="card">
+
+        <h1>Welcome back!</h1>
+    
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+            <div class="form-row">
+                <input type="email" id="email" formControlName="email" placeholder="Email" [ngClass]="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) ? 'danger' : ''" />
+                <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+                    <div *ngIf="loginForm.get('email')?.errors?.['required'] || loginForm.get('email')?.errors?.['email']">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V14" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12.0001 21.41H5.94005C2.47005 21.41 1.02005 18.93 2.70005 15.9L5.82006 10.28L8.76006 5.00003C10.5401 1.79003 13.4601 1.79003 15.2401 5.00003L18.1801 10.29L21.3001 15.91C22.9801 18.94 21.5201 21.42 18.0601 21.42H12.0001V21.41Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11.9945 17H12.0035" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
+                        </svg>
+                        Email is required.</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <input type="password" id="password" formControlName="password" placeholder="Password" [ngClass]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) ? 'danger' : ''" />
+                <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+                    <div *ngIf="loginForm.get('password')?.errors?.['required']">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V14" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12.0001 21.41H5.94005C2.47005 21.41 1.02005 18.93 2.70005 15.9L5.82006 10.28L8.76006 5.00003C10.5401 1.79003 13.4601 1.79003 15.2401 5.00003L18.1801 10.29L21.3001 15.91C22.9801 18.94 21.5201 21.42 18.0601 21.42H12.0001V21.41Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11.9945 17H12.0035" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
+                        </svg>
+                        Password is required.
+                    </div>
+                </div>
+            </div>
+
+    
+            <button class="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+    
+            <p>Not a member? <a routerLink="/auth/register">Create an account.</a></p>
+        
+        </form>
+        
+    </div>    
+</div>
