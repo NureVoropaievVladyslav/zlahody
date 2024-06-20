@@ -24,6 +24,13 @@ const routes: Routes = [
             ),
     },
     {
+        path: 'volunteer',
+        loadChildren: () =>
+            import('./volunteer/feature/volunteer-shell/volunteer-shell.module').then(
+                (m) => m.VolunteerShellModule
+            ),
+    },
+    {
         path: 'home',
         loadChildren: () =>
             import('./home/feature/home-landing/home-landing.module').then(

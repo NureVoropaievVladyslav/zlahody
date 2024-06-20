@@ -6,6 +6,15 @@ namespace Infrastructure.Services;
 
 public class UserService(IRepository<User> repository) : IUserService
 {
+    public async Task<string> GetUserRoleAsync(string email, CancellationToken cancellationToken)
+    {
+        var getUsersQuery = repository.GetQueryable().AsNoTracking();
+        var user = await getUsersQuery.FirstOrDefaultAsync(u => u.Email == email, cancellationToken)
+                       ?? throw new NotFoundException("User not found.");
+
+        return user.Role.ToString();
+    }
+
     public async Task RegisterUserAsync(User user, string password, CancellationToken cancellationToken)
     {
         if (await repository.GetQueryable().AnyAsync(u => u.Email == user.Email, cancellationToken))
