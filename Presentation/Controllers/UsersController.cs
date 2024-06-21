@@ -16,7 +16,7 @@ public class UsersController : ControllerBase
     {
         _mediator = mediator;
     }
-
+    
     [HttpPost]
     public async Task<ActionResult> Register([FromBody] RegisterUserCommand request,
         CancellationToken cancellationToken)

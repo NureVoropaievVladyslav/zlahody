@@ -2,4 +2,4 @@
 
 namespace Application.Features.Requests.Queries.GetOrganisationRequests;
 
-public record GetOrganisationRequestsQuery(Guid OrganisationId) : IRequest<ICollection<RequestResponse>>;
+public record GetOrganisationRequestsQuery() : IRequest<ICollection<RequestResponse>>;

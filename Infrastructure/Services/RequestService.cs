@@ -13,24 +13,28 @@ public class RequestService(
     IHttpContextAccessor httpContextAccessor
     ) : IRequestService
 {
-    public async Task AssignRequestAsync(Guid userId, Guid requestId, CancellationToken cancellationToken)
+    public async Task AssignRequestAsync(Guid requestId, CancellationToken cancellationToken)
     {
+        var userEmail = GetUserEmailFromContext();
+        
         if (await requestAssignmentRepository.GetQueryable().AnyAsync(a => a.RequestId == requestId, cancellationToken))
         {
             throw new ConflictException("Request is already assigned.");
         }
 
-        var user = await userRepository.GetAsync(userId, cancellationToken)
+        var user = await userRepository.GetQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email == userEmail, cancellationToken)
                         ?? throw new NotFoundException("User not found.");
         var request = await requestRepository.GetAsync(requestId, cancellationToken)
                         ?? throw new NotFoundException("Request not found.");
 
         request.OrganizationId = user.OrganizationId;
+        request.IsApproved = true;
   
         var assignment = new RequestAssignment
         {
-            UserId = userId,
-            User = user,
+            UserId = user.Id,
             RequestId = requestId,
             Request = request
         };
@@ -53,13 +57,16 @@ public class RequestService(
         await requestRepository.AddAsync(request, cancellationToken);
     }
 
-    public async Task<ICollection<Request>> GetAssignedRequestsAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<ICollection<Request>> GetAssignedRequestsAsync(CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetAsync(userId, cancellationToken)
+        var userEmail = GetUserEmailFromContext();
+        var user = await userRepository.GetQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email == userEmail, cancellationToken)
             ?? throw new NotFoundException("User not found.");
 
         var assignedRequests = await requestAssignmentRepository.GetQueryable()
-                                .Where(request => request.UserId == userId)
+                                .Where(request => request.UserId == user.Id)
                                 .Select(requestAssignment => requestAssignment.Request)
                                 .AsNoTracking()
                                 .ToListAsync(cancellationToken);
@@ -76,11 +83,17 @@ public class RequestService(
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }
 
-    public async Task<ICollection<Request>> GetOrganisationRequestsAsync(Guid organisationId, CancellationToken cancellationToken)
+    public async Task<ICollection<Request>> GetOrganisationRequestsAsync(CancellationToken cancellationToken)
     {
+        var userEmail = GetUserEmailFromContext();
+        var user = await userRepository.GetQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email == userEmail, cancellationToken)
+            ?? throw new NotFoundException("User not found.");
+        
         var getRequestsQuery = requestRepository.GetQueryable()
             .AsNoTracking()
-            .Where(request => request.OrganizationId == organisationId && request.RequestType != RequestType.PsychologicalSupport);
+            .Where(request => request.OrganizationId == user.OrganizationId && request.RequestType != RequestType.PsychologicalSupport);
 
         return await getRequestsQuery.ToListAsync(cancellationToken);
     }

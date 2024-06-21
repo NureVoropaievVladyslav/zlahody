@@ -16,7 +16,7 @@ public class GetOrganisationRequestsQueryHandler : IRequestHandler<GetOrganisati
 
     public async Task<ICollection<RequestResponse>> Handle(GetOrganisationRequestsQuery request, CancellationToken cancellationToken)
     {
-        var requests = await _requestService.GetOrganisationRequestsAsync(request.OrganisationId, cancellationToken);
+        var requests = await _requestService.GetOrganisationRequestsAsync(cancellationToken);
         return _mapper.Map<ICollection<RequestResponse>>(requests);
     }
 }

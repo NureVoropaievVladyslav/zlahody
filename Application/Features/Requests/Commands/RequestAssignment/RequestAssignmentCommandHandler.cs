@@ -15,7 +15,7 @@ public class RequestAssignmentCommandHandler : IRequestHandler<RequestAssignment
 
     public async Task<Unit> Handle(RequestAssignmentCommand request, CancellationToken cancellationToken)
     {
-        await _requestService.AssignRequestAsync(request.UserId, request.RequestId, cancellationToken);
+        await _requestService.AssignRequestAsync(request.RequestId, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }
