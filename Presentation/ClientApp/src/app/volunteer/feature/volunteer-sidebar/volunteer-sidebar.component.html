@@ -6,11 +6,14 @@
         <a class="tab" routerLink="/volunteer/requests" routerLinkActive="active">
             Requests
         </a>
-        <a class="tab" routerLink="/volunteer/members" routerLinkActive="active">
+        <a *ngIf="getRole() === 'OrganisationOwner'" class="tab" routerLink="/volunteer/members" routerLinkActive="active">
             Members
         </a>
         <a class="tab" routerLink="/volunteer/education" routerLinkActive="active">
            Education
+        </a>
+        <a class="tab" (click)="logout()">
+           Logout
         </a>
     </div>
 </div>

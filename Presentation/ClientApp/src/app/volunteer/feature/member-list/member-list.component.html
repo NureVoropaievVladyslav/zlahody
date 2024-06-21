@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="members">
+        <div class="member" *ngFor="let application of applications">
+            <h5>{{ application.volunteerName }}</h5>
+            <p *ngIf="!application.isAccepted">Would like to join your organization</p>
+            <button class="primary" *ngIf="!application.isAccepted" (click)="acceptApplication(application)">Accept</button>
+            <p *ngIf="application.isAccepted">Is a member since {{ application.createdAt | date: 'mediumDate'}}</p>
+            <button class="danger" *ngIf="application.isAccepted" (click)="kick(application)">Kick</button>
+        </div>
+    </div>
+</div>

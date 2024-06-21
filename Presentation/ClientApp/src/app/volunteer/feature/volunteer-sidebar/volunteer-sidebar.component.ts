@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../auth/data-access/auth.service';
 
 @Component({
   selector: 'app-volunteer-sidebar',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class VolunteerSidebarComponent {
 
+  constructor(private authService: AuthService) {  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  getRole(): string {
+    return this.authService.getRole();
+  }
 }

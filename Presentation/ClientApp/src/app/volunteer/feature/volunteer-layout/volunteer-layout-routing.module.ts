@@ -21,6 +21,32 @@ const routes: Routes = [
         pathMatch: "full"
       }
     ]
+  },
+  {
+    path: '',
+    component: VolunteerLayoutComponent,
+    children: [
+      {
+        path: 'requests',
+        loadChildren: () =>
+            import('../request-list/request-list.module').then(
+                (m) => m.RequestListModule
+            ),
+      },
+    ]
+  },
+  {
+    path: '',
+    component: VolunteerLayoutComponent,
+    children: [
+      {
+        path: 'members',
+        loadChildren: () =>
+            import('../member-list/member-list.module').then(
+                (m) => m.MemberListModule
+            ),
+      },
+    ]
   }
 ];
 
