@@ -1,6 +1,6 @@
 export const environment = {
-  apiUrl: 'https://localhost:8080/api',
-  chatHubUrl: 'https://localhost:8080/chat',
+  apiUrl: 'http://192.168.0.109:8080/api',
+  chatHubUrl: 'http://192.168.0.109:8080/chat',
   firebase: {
     apiKey: "AIzaSyDtcD1shRD160neQ13zTJCwtGWHzZ9PAtg",
     authDomain: "zlahody-1f7e9.firebaseapp.com",

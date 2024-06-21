@@ -86,20 +86,18 @@ export default function ChatScreen() {
         }
 
         createHubConnection().then(() => {
-            hubConnection?.on('ReceiveMessage', (message: string) => {
-                console.log(message);
+            hubConnection?.invoke('JoinChatRoom', id).then();
 
+            hubConnection?.on('ReceiveMessage', (message: string) => {
                 const newMessage: MessageResponse = {
                     content: message,
-                    senderEmail: email,
-                    senderName: messages.find(message => message.senderEmail === email)?.senderName || "",
+                    senderEmail: messages.find(message => message.senderEmail !== email)?.senderEmail || "",
+                    senderName: messages.find(message => message.senderEmail !== email)?.senderName || "",
                     createdAt: new Date()
                 }
 
-                console.log(newMessage);
+                setMessages(prevMessages => [...prevMessages, newMessage]);
             });
-
-            hubConnection?.invoke('JoinChatRoom', id).then();
         });
 
         const fetchEmail = async () => {

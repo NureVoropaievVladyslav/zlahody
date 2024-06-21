@@ -1,6 +1,6 @@
-import { ScrollView, View, Text, Alert } from 'react-native';
+import { ScrollView, View, Text, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import ActionButton from '../../components/ActionButton';
 import FormField from '../../components/FormField';
@@ -79,10 +79,9 @@ export default function RegisterScreen() {
                         containerStyles="mt-7"
                         isLoading={isSubmitting}
                     />
-                    <Link className="text-center"
-                        href="/login">
-                        Already have an account? <Text className="text-primary underline">Sign in.</Text>
-                    </Link>
+                    <TouchableOpacity onPress={() => router.replace('/login')}>
+                        <Text className="text-center mt-4">Already have an account? <Text className="text-primary underline">Log in </Text></Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>

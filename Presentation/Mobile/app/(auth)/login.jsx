@@ -37,7 +37,7 @@ export default function LoginScreen() {
                     router.replace('(tabs)/resources');
                 })
                 .catch((error) => {
-                    console.error('Error:', error);
+                    Alert.alert("Error", "Invalid email or password");
                 });
         }
     };
@@ -71,7 +71,7 @@ export default function LoginScreen() {
                         isLoading={isSubmitting}
                     />
                     <TouchableOpacity onPress={() => router.replace('/register')}>
-                        <Text className="text-center mt-4">Already have an account? Log in</Text>
+                        <Text className="text-center mt-4">Don't have an account? <Text className="text-primary underline">Register</Text></Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

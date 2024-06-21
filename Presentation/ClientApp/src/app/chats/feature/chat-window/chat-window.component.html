@@ -1,11 +1,11 @@
 <div class="container">
-    <div class="messages">
-        <div class="message" *ngFor="let message of messages" [ngClass]="message.senderEmail === localStorage.getItem('email') ? 'sent' : 'received'">
-            <p>{{ message.content }}</p>
-            <span>{{ message.createdAt | date: 'hh:mm'}}</span>
-        </div>
+  <div class="messages" #messageContainer>
+    <div class="message" *ngFor="let message of messages" [ngClass]="message.senderEmail === localStorage.getItem('email') ? 'sent' : 'received'">
+      <p>{{ message.content }}</p>
+      <span>{{ message.createdAt | date: 'hh:mm'}}</span>
     </div>
-<!--    <p *ngFor="let message of messages" [ngClass]="message.senderEmail === localStorage.getItem('email') ? 'sent' : 'received'">{{ message.content }}</p>-->
+  </div>
+
 
     <input [(ngModel)]="message" type="text">
     <svg (click)="sendMessage()" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
