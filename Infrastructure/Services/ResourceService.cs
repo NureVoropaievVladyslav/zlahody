@@ -22,7 +22,7 @@ public class ResourceService(
         var volunteer = await getUsersQuery.FirstOrDefaultAsync(u => u.Email == volunteerEmail, cancellationToken)
                        ?? throw new NotFoundException("Volunteer not found.");
 
-        if (volunteer.Role == Role.Volunteer || volunteer.Role == Role.OrganisationOwner)
+        if (!(volunteer.Role == Role.Volunteer || volunteer.Role == Role.OrganisationOwner))
         {
             throw new ForbiddenException("You are not volunteer or owner of the organization");
         }
@@ -41,7 +41,7 @@ public class ResourceService(
         var volunteer = await getUsersQuery.FirstOrDefaultAsync(u => u.Email == volunteerEmail, cancellationToken)
                        ?? throw new NotFoundException("Volunteer not found.");
 
-        if (volunteer.Role == Role.Volunteer || volunteer.Role == Role.OrganisationOwner)
+        if (!(volunteer.Role == Role.Volunteer || volunteer.Role == Role.OrganisationOwner))
         {
             throw new ForbiddenException("You are not volunteer or owner of the organization");
         }

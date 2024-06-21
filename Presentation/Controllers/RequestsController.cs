@@ -15,6 +15,7 @@ namespace Presentation.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RequestsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -30,11 +31,12 @@ namespace Presentation.Controllers
             await _mediator.Send(request, cancellationToken);
             return Ok();
         }
-
-        [HttpPost("assign")]
-        public async Task<ActionResult> AssignRequest([FromBody] RequestAssignmentCommand request, CancellationToken cancellationToken)
+        
+        [Authorize(Roles = "OrganisationOwner, Volunteer")]
+        [HttpPost("{requestId}/assign")]
+        public async Task<ActionResult> AssignRequest(Guid requestId, CancellationToken cancellationToken)
         {
-            await _mediator.Send(request, cancellationToken);
+            await _mediator.Send(new RequestAssignmentCommand(requestId), cancellationToken);
             return Ok();
         }
 
@@ -45,17 +47,17 @@ namespace Presentation.Controllers
             return Ok(response);
         }
 
-        [HttpGet("organisations/{organisationId}")]
-        public async Task<ActionResult> GetOrganisationRequests(Guid organisationId, CancellationToken cancellationToken)
+        [HttpGet("organisation")]
+        public async Task<ActionResult> GetOrganisationRequests(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetOrganisationRequestsQuery(organisationId), cancellationToken);
+            var response = await _mediator.Send(new GetOrganisationRequestsQuery(), cancellationToken);
             return Ok(response);
         }
 
-        [HttpGet("assigned/{userId}")]
-        public async Task<ActionResult> GetAssignedRequests(Guid userId, CancellationToken cancellationToken)
+        [HttpGet("assigned")]
+        public async Task<ActionResult> GetAssignedRequests(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAssignedRequestsQuery(userId), cancellationToken);
+            var response = await _mediator.Send(new GetAssignedRequestsQuery(), cancellationToken);
             return Ok(response);
         }
 

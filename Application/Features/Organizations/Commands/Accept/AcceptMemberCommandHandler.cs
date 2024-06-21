@@ -14,7 +14,7 @@ public class AcceptMemberCommandHandler : IRequestHandler<AcceptMemberCommand, U
     }
     public async Task<Unit> Handle(AcceptMemberCommand request, CancellationToken cancellationToken)
     {
-        await _organizationService.AcceptMemberAsync(request.VolunteerId, request.OrganizationId, cancellationToken);
+        await _organizationService.AcceptMemberAsync(request.VolunteerId, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }

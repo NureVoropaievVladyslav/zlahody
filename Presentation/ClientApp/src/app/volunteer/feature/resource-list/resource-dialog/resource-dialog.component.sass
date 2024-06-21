@@ -1,0 +1,58 @@
+@import 'styles'
+
+.container 
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 20px
+  
+  .card 
+    background-color: #fff
+    padding: 20px
+    margin: 20px 0
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+    border-radius: 8px
+    width: 100%
+    max-width: 600px
+
+    form 
+      display: flex
+      flex-direction: column
+
+      input[type="text"], select 
+        width: 100%
+        padding: 10px
+        margin: 10px 0
+        border-radius: 10px
+        font-size: 16px
+
+      select 
+        appearance: none
+        background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5.5l6 6 6-6'/></svg>")
+        background-repeat: no-repeat
+        background-position: right 10px center
+        background-size: 12px
+
+      .error
+        color: #d9534f
+        font-size: 14px
+        margin-top: -10px
+        margin-bottom: 10px
+
+      button
+        padding: 10px
+        border: none
+        border-radius: 4px
+        background-color: $primary-color
+        color: #fff
+        font-size: 16px
+        cursor: pointer
+        transition: background-color 0.3s ease
+        margin-top: 20px
+
+        &:disabled
+          background-color: #ccc
+          cursor: not-allowed
+
+        &:not(:disabled):hover 
+          background-color: #0056b3

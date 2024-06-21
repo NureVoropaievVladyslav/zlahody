@@ -15,7 +15,7 @@ public sealed class GetOrganizationApplicationsQueryHandler : IRequestHandler<Ge
 
     public async Task<List<OrganizationApplicationResponse>> Handle(GetOrganizationApplicationsQuery request, CancellationToken cancellationToken)
     {
-        var organisationApplications = await _organizationService.GetOrganizationApplicationsAsync(request.OrganizationId, cancellationToken);
+        var organisationApplications = await _organizationService.GetOrganizationApplicationsAsync(cancellationToken);
         return _mapper.Map<List<OrganizationApplicationResponse>>(organisationApplications);
     }
 }
