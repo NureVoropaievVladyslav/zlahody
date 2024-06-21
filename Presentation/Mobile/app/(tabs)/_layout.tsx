@@ -40,10 +40,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="education"
                     options={{
-                        title: 'Education',
-                        tabBarIcon: ({ color, focused }) => (
-                            <TabBarIcon name='info' color={color}/>
-                        ),
+                        href: null
                     }}
                 />
                 <Tabs.Screen

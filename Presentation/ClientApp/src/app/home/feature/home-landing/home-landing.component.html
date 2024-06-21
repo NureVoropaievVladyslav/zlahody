@@ -1,21 +1,24 @@
-<!--<img class="abstract" src="assets/hero-bg.png" alt="hero-image">-->
 <nav>
     <div class="logo">
     </div>
     <ul>
-        <li><a>About us</a></li>
+        <li><a href="#about-us">About Us</a></li>
         <li><a>How it works</a></li>
         <li><a>Why Zlahody</a></li>
         <li><a>Our team</a></li>
     </ul>
     <div class="controls">
-        <button class="transparent primary-border" [routerLink]="'/auth/register'">Sign up</button>
+        <button class="transparent primary-border" [routerLink]="'/auth/login'">Sign in</button>
     </div>
 </nav>
 <main>
     <div class="hero">
-        <h1>Your <span>Health</span> Matter</h1>
+        <h1>Your <span>Life</span> Matters</h1>
         <p>Here you can find resources, tips and support to help you improve your health</p>
         <button class="primary" [routerLink]="'/auth/register'">Sign up</button>
+    </div>
+    <div class="about">
+      <h1>Who We Are?</h1>
+      <p>Zlahody aims to connect volunteers with those in need, fostering a community of support and compassion.</p>
     </div>
 </main>
