@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ClientAppPolicy",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200", "https://zlahody.vercel.app", "https://zlahody.life")
+            builder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader();
