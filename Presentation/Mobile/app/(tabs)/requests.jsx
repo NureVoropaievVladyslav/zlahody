@@ -30,7 +30,7 @@ export default function RequestsScreen() {
     );
 
     return (
-        <SafeAreaView className="bg-background p-4">
+        <SafeAreaView className="h-screen bg-background p-4">
             <ScrollView className="mb-2">
                 {
                     requests.map((request, index) => {
@@ -47,7 +47,7 @@ export default function RequestsScreen() {
                 }
             </ScrollView>
 
-            <View className="w-full flex justify-center mb-12">
+            <View className="w-full flex justify-center mb-10">
                 <TouchableOpacity className="w-full bg-primary rounded-lg flex flex-row justify-center items-center p-2" onPress={() => router.replace('/create')}>
                     <Text className="text-center text-xl mr-2 text-white font-pregular"> Create </Text>
                     <FontAwesome6 name="circle-plus" size={24} color="#fff" />

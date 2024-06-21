@@ -61,6 +61,12 @@ export default function TabsLayout() {
                         href: null
                     }}
                 />
+                <Tabs.Screen
+                    name="chats/[id]"
+                    options={{
+                        href: null
+                    }}
+                />
             </Tabs>
             <StatusBar style="dark" />
         </>

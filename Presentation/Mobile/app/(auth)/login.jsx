@@ -33,6 +33,7 @@ export default function LoginScreen() {
                 .then((response) => response.json())
                 .then(async (data) => {
                     await AsyncStorage.setItem('token', data.idToken);
+                    await AsyncStorage.setItem('email', data.email);
                     router.replace('(tabs)/resources');
                 })
                 .catch((error) => {
