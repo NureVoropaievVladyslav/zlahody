@@ -60,10 +60,11 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpPost("{organizationId}/users/{volunteerId}")]
-        public async Task<ActionResult> Accept(Guid volunteerId, Guid organizationId, CancellationToken cancellationToken)
+        [Authorize(Roles = "OrganisationOwner")]
+        [HttpPost("personal/users/{volunteerId}")]
+        public async Task<ActionResult> Accept(Guid volunteerId, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new AcceptMemberCommand(volunteerId, organizationId), cancellationToken);
+            await _mediator.Send(new AcceptMemberCommand(volunteerId), cancellationToken);
             return Ok();
         }
 
@@ -74,17 +75,19 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpPut("{organizationId}/users/{volunteerId}")]
-        public async Task<ActionResult> Kick(Guid volunteerId, Guid organizationId, CancellationToken cancellationToken)
+        [Authorize(Roles = "OrganisationOwner")]
+        [HttpPut("personal/users/{volunteerId}")]
+        public async Task<ActionResult> Kick(Guid volunteerId, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new KickUserCommand(volunteerId, organizationId), cancellationToken);
+            await _mediator.Send(new KickUserCommand(volunteerId), cancellationToken);
             return Ok();
         }
         
-        [HttpGet("{organizationId}/applications")]
+        [Authorize(Roles = "OrganisationOwner")]
+        [HttpGet("personal/applications")]
         public async Task<ActionResult> GetApplications(Guid organizationId, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetOrganizationApplicationsQuery(organizationId), cancellationToken);
+            var response = await _mediator.Send(new GetOrganizationApplicationsQuery(), cancellationToken);
             return Ok(response);
         }
     }

@@ -15,7 +15,7 @@ public class KickUserCommandHandler : IRequestHandler<KickUserCommand, Unit>
 
     public async Task<Unit> Handle(KickUserCommand request, CancellationToken cancellationToken)
     {
-        await _organizationService.KickUserAsync(request.volunteerId, request.OrganizationId, cancellationToken);
+        await _organizationService.KickUserAsync(request.VolunteerId, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }

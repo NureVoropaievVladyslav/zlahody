@@ -42,6 +42,7 @@
               ]
             },
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.sass"
             ],
@@ -115,6 +116,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.sass"
             ],
             "scripts": []

@@ -2,4 +2,4 @@
 
 namespace Application.Features.Requests.Queries.GetAssignedRequests;
 
-public record GetAssignedRequestsQuery(Guid UserId) : IRequest<ICollection<RequestResponse>>;
+public record GetAssignedRequestsQuery() : IRequest<ICollection<RequestResponse>>;

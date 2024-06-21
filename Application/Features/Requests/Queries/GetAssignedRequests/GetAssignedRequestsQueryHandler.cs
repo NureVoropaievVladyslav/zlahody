@@ -16,7 +16,7 @@ public class GetAssignedRequestsQueryHandler : IRequestHandler<GetAssignedReques
 
     public async Task<ICollection<RequestResponse>> Handle(GetAssignedRequestsQuery request, CancellationToken cancellationToken)
     {
-        var requests = await _requestService.GetAssignedRequestsAsync(request.UserId, cancellationToken);
+        var requests = await _requestService.GetAssignedRequestsAsync(cancellationToken);
         return _mapper.Map<ICollection<RequestResponse>>(requests);
     }
 }

@@ -4,7 +4,7 @@ public class RequestAssignment : BaseEntity
 {
     public required Guid UserId { get; set; }
 
-    public required User User { get; set;}
+    public User? User { get; set;}
 
     public required Guid RequestId { get; set; }
 

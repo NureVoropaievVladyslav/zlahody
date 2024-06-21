@@ -10,6 +10,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorInterceptor } from './shared/utils/error.interceptor';
+import { MatDialogModule } from '@angular/material/dialog';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -22,9 +26,12 @@ import { ErrorInterceptor } from './shared/utils/error.interceptor';
     AngularFireAuthModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    MatDialogModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,16 @@
+<div class="container">
+    <button class="create-btn" (click)="openDialog('', 'create')">Create</button>
+    <div class="cards">
+        <div class="card" *ngFor="let resource of resources">
+            <h5>{{ resource.title }}</h5>
+            <p>{{ resource.type }}</p>
+
+            <div class="buttons">
+                <button class="edit-button">Edit</button>
+                <button class="delete-button" (click)="onDelete(resource)">Delete</button>
+              </div>
+        </div>
+    </div>
+</div>
+  
+  

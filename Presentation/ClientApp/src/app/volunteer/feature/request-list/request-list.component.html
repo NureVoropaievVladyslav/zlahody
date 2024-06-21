@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="actions">
+        <ul>
+            <li [class.active]="selectedAction === 'Available'" (click)="selectAction('Available')">Available</li>
+            <li [class.active]="selectedAction === 'Organization'" (click)="selectAction('Organization')">Organization</li>
+            <li [class.active]="selectedAction === 'Assigned'" (click)="selectAction('Assigned')">Assigned</li>
+        </ul>
+    </div>
+
+    <div class="requests">
+        <div class="request" *ngFor="let request of requests">
+            <h5>{{ RequestType[request.requestType] }}</h5>
+            <p>{{ request.content}}</p>
+            <button *ngIf="!request.isApproved" (click)="acceptRequest(request.id)" class="primary">Accept</button>
+        </div>
+    </div>
+</div>

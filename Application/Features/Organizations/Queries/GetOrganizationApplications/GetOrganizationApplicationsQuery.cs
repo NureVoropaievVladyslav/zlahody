@@ -1,6 +1,6 @@
 namespace Application.Features.Organizations.Queries.GetOrganizationApplications;
 
-public record GetOrganizationApplicationsQuery(Guid OrganizationId) : IRequest<List<OrganizationApplicationResponse>>;
+public record GetOrganizationApplicationsQuery() : IRequest<List<OrganizationApplicationResponse>>;
 
 public class OrganizationApplicationResponse
 {
@@ -8,6 +8,8 @@ public class OrganizationApplicationResponse
     public required string VolunteerName { get; set; }
     
     public bool IsAccepted { get; set; }
+    
+    public DateTimeOffset CreatedAt { get; set; }
 
     public class MappingProfile : Profile
     {

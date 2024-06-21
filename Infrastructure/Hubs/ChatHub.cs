@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Infrastructure.Hubs;
 
-//[Authorize]
 public class ChatHub : Hub
 {
     private readonly Dictionary<string, string> _connections = new();
-    
+
     public async Task JoinChatRoom(Guid chatId)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());

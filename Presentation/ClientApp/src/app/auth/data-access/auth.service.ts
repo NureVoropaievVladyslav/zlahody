@@ -23,10 +23,13 @@ export class AuthService {
     return from(
       this.afAuth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
+          userCredential.user?.getIdTokenResult().then((res) => sessionStorage.setItem('role', res.claims['role']));
+
           return userCredential.user?.getIdToken().then((token) => {
+
             localStorage.setItem('token', token);
             localStorage.setItem('email', userCredential.user!.email!);
-            this.router.navigate(['organizations/']);
+            this.router.navigate(['volunteer/']);
           });
       })
     );
@@ -40,4 +43,15 @@ export class AuthService {
     });
   }
 
+    logout() {
+        this.afAuth.signOut().then(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('email');
+          this.router.navigate(['auth/login']);
+        });
+    }
+
+  getRole(): string {
+    return sessionStorage.getItem('role')!;
+  }
 }
