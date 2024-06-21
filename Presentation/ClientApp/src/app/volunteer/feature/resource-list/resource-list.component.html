@@ -1,4 +1,5 @@
 <div class="container">
+    <button class="create-btn" (click)="openDialog('', 'create')">Create</button>
     <div class="cards">
         <div class="card" *ngFor="let resource of resources">
             <h5>{{ resource.title }}</h5>

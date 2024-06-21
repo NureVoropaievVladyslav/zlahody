@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { ResourceListRoutingModule } from './resource-list-routing.module';
 import { ResourceListComponent } from './resource-list.component';
+import { ResourceDialogComponent } from './resource-dialog/resource-dialog.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    ResourceListComponent
+    ResourceListComponent,
+    ResourceDialogComponent
   ],
   imports: [
     CommonModule,
-    ResourceListRoutingModule
+    ResourceListRoutingModule,
+    ReactiveFormsModule,
   ]
 })
 export class ResourceListModule { }

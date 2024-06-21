@@ -16,4 +16,26 @@ export class ResourceService {
   deleteResource(resourceId: string){
     return this.http.delete(`/resources`, resourceId);
   }
+
+  createResource(resource: Resource){
+    return this.http.post(`/resources`, 
+      {
+        title: resource.title,
+        description: resource.description,
+        type: resource.type,
+        address: resource.address,
+        phone: resource.phone
+      } )
+  }
+
+  updateResource(resource: Resource){
+    return this.http.put(`/resources`, 
+      {
+        title: resource.title,
+        description: resource.description,
+        type: resource.type,
+        address: resource.address,
+        phone: resource.phone
+      } )
+  }
 }

@@ -3,10 +3,10 @@ import { ResourceService } from '../../data-access/resource.service';
 import { OrganizationsService } from '../../../organizations/data-access/organizations.service';
 import { Resource } from '../../models/resource';
 import { NgFor } from '@angular/common';
+import { ResourceDialogComponent } from './resource-dialog/resource-dialog.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-export type ResourceType = 'Shelter' | 'Medical' | 'Food' | 'TemporaryHousing' | 'Other';
-
-function mapResourceTypeToString(type: number): ResourceType | undefined {
+function mapResourceTypeToString(type: number): string | undefined {
   switch (type) {
     case 0:
       return 'Shelter';
@@ -35,6 +35,7 @@ export class ResourceListComponent {
   constructor(
     private resourceService: ResourceService,
     private organizationsService: OrganizationsService,
+    private dialogRef: MatDialog,
     ) { }
 
   ngOnInit(): void {
@@ -49,6 +50,20 @@ export class ResourceListComponent {
             }));
           });
       });
+  }
+
+  openDialog(resourceId: string, actionName: string) {
+    this.dialogRef.open(ResourceDialogComponent, {
+      data: { resourceId, actionName }
+    });
+
+    this.dialogRef.afterAllClosed.subscribe(() => {
+      this.resourceService.getOrganizationResources(this.organizationId).subscribe(
+        (res: Resource[]) => {
+          this.resources = res;
+        }
+      );
+    });
   }
 
   onDelete(resource: Resource){
