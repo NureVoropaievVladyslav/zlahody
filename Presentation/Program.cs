@@ -29,13 +29,14 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("localhostPolicy", builder =>
-    {
-        builder.AllowAnyHeader()
-            .AllowAnyMethod()
-            .WithOrigins("http://localhost:4200")
-            .AllowCredentials();
-    });
+    options.AddPolicy("ClientAppPolicy",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200", "https://zlahody.vercel.app", "https://zlahody.life")
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
 
 var app = builder.Build();
@@ -44,7 +45,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseCors("localhostPolicy");
+app.UseCors("ClientAppPolicy");
 
 app.UseAuthentication();
 
