@@ -8,6 +8,8 @@ public class MessageResponse
     
     public required string SenderEmail { get; set; }
     
+    public required string SenderName { get; set; }
+    
     public DateTimeOffset CreatedAt { get; set; }
     
     public class MappingProfile : Profile
@@ -15,7 +17,8 @@ public class MessageResponse
         public MappingProfile()
         {
             CreateMap<Message, MessageResponse>()
-                .ForMember(dest => dest.SenderEmail, opt => opt.MapFrom(src => src.Sender.Email));
+                .ForMember(dest => dest.SenderEmail, opt => opt.MapFrom(src => src.Sender.Email))
+                .ForMember(dest => dest.SenderName, opt => opt.MapFrom(src => src.Sender.FullName));
         }
     }
 }

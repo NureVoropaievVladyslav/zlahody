@@ -7,6 +7,8 @@ public record GetAvaliableRequestsQuery() : IRequest<ICollection<RequestResponse
 
 public class RequestResponse
 {
+    public required string Content { get; set; }
+    
     public Guid Id { get; init; }
 
     public RequestType RequestType { get; set; }
