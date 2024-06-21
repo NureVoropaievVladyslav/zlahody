@@ -10,6 +10,8 @@ public class User : BaseEntity
 
     public Role Role { get; set; } = Role.Victim;
     
+    public required string FirebaseUid { get; set; }
+    
     public Guid? OrganizationId { get; set; }
     
     public Organization? Organization { get; set; }

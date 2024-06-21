@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
+using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services;
@@ -32,6 +33,9 @@ public class OrganizationService(
             application.IsAccepted = true;
             member.OrganizationId = organizationId;
             member.Role = Role.Volunteer;
+            var customClaims = new Dictionary<string, object>();
+            customClaims.Add("role", member.Role.ToString());
+            await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(member.FirebaseUid, customClaims, cancellationToken);
             organizationApplicationRepository.Update(application);
             userRepository.Update(member);
         }
@@ -57,6 +61,9 @@ public class OrganizationService(
         var organization = new Organization { Name = name };
         owner.Role = Role.OrganisationOwner;
         owner.Organization = organization;
+        var customClaims = new Dictionary<string, object>();
+        customClaims.Add("role", owner.Role.ToString());
+        await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(owner.FirebaseUid, customClaims, cancellationToken);
 
         userRepository.Update(owner);
         await organizationRepository.AddAsync(organization, cancellationToken);
