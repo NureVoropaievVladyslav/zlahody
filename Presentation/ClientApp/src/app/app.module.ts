@@ -10,9 +10,9 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorInterceptor } from './shared/utils/error.interceptor';
-import { MatDialogModule } from '@angular/material/dialog';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
